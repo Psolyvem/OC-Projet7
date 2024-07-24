@@ -1,6 +1,7 @@
 package com.openclassrooms.pcs.controllers;
 
 import com.openclassrooms.pcs.domain.CurvePoint;
+import com.openclassrooms.pcs.service.ICurvePointService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,7 +14,13 @@ import jakarta.validation.Valid;
 
 @Controller
 public class CurveController {
-    // TODO: Inject Curve Point service
+
+    ICurvePointService curvePointService;
+
+    public CurveController(ICurvePointService curvePointService)
+    {
+        this.curvePointService = curvePointService;
+    }
 
     @RequestMapping("/curvePoint/list")
     public String home(Model model)

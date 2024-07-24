@@ -1,6 +1,7 @@
 package com.openclassrooms.pcs.controllers;
 
 import com.openclassrooms.pcs.domain.Trade;
+import com.openclassrooms.pcs.service.ITradeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,7 +14,13 @@ import jakarta.validation.Valid;
 
 @Controller
 public class TradeController {
-    // TODO: Inject Trade service
+
+    ITradeService tradeService;
+
+    public TradeController(ITradeService tradeService)
+    {
+        this.tradeService = tradeService;
+    }
 
     @RequestMapping("/trade/list")
     public String home(Model model)

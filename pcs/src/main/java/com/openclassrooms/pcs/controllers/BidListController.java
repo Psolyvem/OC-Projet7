@@ -1,6 +1,7 @@
 package com.openclassrooms.pcs.controllers;
 
 import com.openclassrooms.pcs.domain.BidList;
+import com.openclassrooms.pcs.service.IBidListService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,12 +15,18 @@ import jakarta.validation.Valid;
 
 @Controller
 public class BidListController {
-    // TODO: Inject Bid service
+
+    IBidListService bidListService;
+
+    public BidListController(IBidListService bidListService)
+    {
+        this.bidListService = bidListService;
+    }
 
     @RequestMapping("/bidList/list")
     public String home(Model model)
     {
-        // TODO: call service find all bids to show to the view
+        bidListService.getBidLists();
         return "bidList/list";
     }
 

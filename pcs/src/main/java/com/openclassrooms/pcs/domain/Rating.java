@@ -1,10 +1,18 @@
 package com.openclassrooms.pcs.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "rating")
 public class Rating {
-    // TODO: Map columns in data table RATING with corresponding java fields
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	Integer id;
+	String moodysRating;
+	String sAndPRating;
+	String fitchRating;
+	Integer orderNumber;
 }

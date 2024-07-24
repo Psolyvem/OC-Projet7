@@ -1,6 +1,7 @@
 package com.openclassrooms.pcs.controllers;
 
 import com.openclassrooms.pcs.domain.Rating;
+import com.openclassrooms.pcs.service.IRatingService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,7 +14,13 @@ import jakarta.validation.Valid;
 
 @Controller
 public class RatingController {
-    // TODO: Inject Rating service
+
+    IRatingService ratingService;
+
+    public RatingController(IRatingService ratingService)
+    {
+        this.ratingService = ratingService;
+    }
 
     @RequestMapping("/rating/list")
     public String home(Model model)

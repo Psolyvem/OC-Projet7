@@ -1,10 +1,20 @@
 package com.openclassrooms.pcs.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "rulename")
 public class RuleName {
-    // TODO: Map columns in data table RULENAME with corresponding java fields
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	Integer id;
+	String name;
+	String description;
+	String json;
+	String template;
+	String sqlStr;
+	String sqlPart;
 }

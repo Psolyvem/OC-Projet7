@@ -1,6 +1,7 @@
 package com.openclassrooms.pcs.controllers;
 
 import com.openclassrooms.pcs.domain.RuleName;
+import com.openclassrooms.pcs.service.IRuleNameService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,7 +14,13 @@ import jakarta.validation.Valid;
 
 @Controller
 public class RuleNameController {
-    // TODO: Inject RuleName service
+
+    IRuleNameService ruleNameService;
+
+    public RuleNameController(IRuleNameService ruleNameService)
+    {
+        this.ruleNameService = ruleNameService;
+    }
 
     @RequestMapping("/ruleName/list")
     public String home(Model model)
