@@ -25,7 +25,7 @@ public class CurveController {
     @RequestMapping("/curvePoint/list")
     public String home(Model model)
     {
-        // TODO: find all Curve Point, add to model
+        model.addAttribute("curvePoints", curvePointService.getCurvePoints());
         return "curvePoint/list";
     }
 

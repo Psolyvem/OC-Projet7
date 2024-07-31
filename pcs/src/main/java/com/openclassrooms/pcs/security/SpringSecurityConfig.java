@@ -27,7 +27,7 @@ public class SpringSecurityConfig
 		{
 //			auth.requestMatchers("/admin").hasRole("ADMIN");
 //			auth.requestMatchers("/user").hasRole("USER");
-			auth.requestMatchers("/*").permitAll();
+			//auth.requestMatchers("/*").permitAll();
 			//auth.requestMatchers("/*").authenticated();
 			auth.anyRequest().authenticated();
 		})

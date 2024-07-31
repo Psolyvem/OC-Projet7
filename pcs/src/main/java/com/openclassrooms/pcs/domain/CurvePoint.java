@@ -1,6 +1,8 @@
 package com.openclassrooms.pcs.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.sql.Timestamp;
@@ -15,7 +17,9 @@ public class CurvePoint {
 	Integer id;
 	Integer curveId;
 	Timestamp asOfDate;
+	@NotNull(message = "Term is mandatory")
 	Double term;
+	@NotNull(message = "Value is mandatory")
 	Double value;
 	Timestamp creationDate;
 }

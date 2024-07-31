@@ -2,6 +2,7 @@ package com.openclassrooms.pcs.controllers;
 
 import com.openclassrooms.pcs.domain.Rating;
 import com.openclassrooms.pcs.service.IRatingService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

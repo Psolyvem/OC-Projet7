@@ -26,7 +26,7 @@ public class BidListController {
     @RequestMapping("/bidList/list")
     public String home(Model model)
     {
-        bidListService.getBidLists();
+        model.addAttribute("bidList", bidListService.getBidLists());
         return "bidList/list";
     }
 
