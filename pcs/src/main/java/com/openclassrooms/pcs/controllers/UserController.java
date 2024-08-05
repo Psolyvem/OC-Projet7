@@ -3,9 +3,9 @@ package com.openclassrooms.pcs.controllers;
 import com.openclassrooms.pcs.domain.User;
 import com.openclassrooms.pcs.service.IUserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -14,17 +14,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Controller for handling HTTP request concerning Users.
+ */
 @Controller
 public class UserController
 {
-	@Autowired
 	private IUserService userService;
 
+	public UserController(IUserService userService)
+	{
+		this.userService = userService;
+	}
+
 	@RequestMapping("/user/list")
-	public String home(Model model)
+	public String home(Model model, Principal principal)
 	{
 		model.addAttribute("users", userService.getUsers());
 		return "user/list";
@@ -36,6 +44,7 @@ public class UserController
 		return "user/add";
 	}
 
+	@Transactional
 	@PostMapping("/user/validate")
 	public String validate(@Valid User user, BindingResult result, Model model)
 	{
@@ -68,6 +77,7 @@ public class UserController
 		return "user/update";
 	}
 
+	@Transactional
 	@PostMapping("/user/update/{id}")
 	public String updateUser(@PathVariable("id") Integer id, @Valid User user, BindingResult result, Model model)
 	{

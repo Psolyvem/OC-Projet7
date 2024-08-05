@@ -22,18 +22,16 @@ public class SpringSecurityConfig
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
 	{
-
 		return http.authorizeHttpRequests(auth ->
 		{
-//			auth.requestMatchers("/admin").hasRole("ADMIN");
-//			auth.requestMatchers("/user").hasRole("USER");
-			//auth.requestMatchers("/*").permitAll();
-			//auth.requestMatchers("/*").authenticated();
+			auth.requestMatchers("/static/**").permitAll();
+			auth.requestMatchers("/user/**").hasRole("ADMIN");
+			auth.requestMatchers("/**").hasAnyRole("USER", "ADMIN");
 			auth.anyRequest().authenticated();
+
 		})
 				.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
-				//.oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
 				.formLogin(Customizer.withDefaults())
 				//.httpBasic(Customizer.withDefaults())
 				.build();

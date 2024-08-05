@@ -1,6 +1,7 @@
 package com.openclassrooms.pcs.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -10,7 +11,8 @@ import java.sql.Timestamp;
 @Data
 @Entity
 @Table(name = "trade")
-public class Trade {
+public class Trade
+{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "trade_id")
@@ -20,6 +22,7 @@ public class Trade {
 	@NotBlank(message = "Type is mandatory")
 	String type;
 	@NotNull(message = "Buy quantity is mandatory")
+	@Min(value = 0, message = "Must be over 0")
 	Double buyQuantity;
 	Double sellQuantity;
 	Double buyPrice;
