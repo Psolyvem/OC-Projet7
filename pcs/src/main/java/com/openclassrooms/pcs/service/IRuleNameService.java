@@ -4,6 +4,9 @@ import com.openclassrooms.pcs.domain.RuleName;
 
 import java.util.Optional;
 
+/**
+ * An Interface defining the methods needed for an implementation of a RuleNameService.
+ */
 public interface IRuleNameService
 {
 	public Iterable<RuleName> getRuleNames();

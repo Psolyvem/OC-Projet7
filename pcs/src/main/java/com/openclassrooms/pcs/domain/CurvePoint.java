@@ -6,6 +6,9 @@ import lombok.Data;
 
 import java.sql.Timestamp;
 
+/**
+ * A representation class for a curve_point object in the database.
+ */
 @Data
 @Entity
 @Table(name = "curve_point")

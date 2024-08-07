@@ -12,6 +12,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * Configuration class for Spring Security.
+ */
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig
@@ -19,6 +22,13 @@ public class SpringSecurityConfig
 	@Autowired
 	CustomUserDetailsService customUserDetailsService;
 
+	/**
+	 * Define the Security filter chain for the application.
+	 * Make the endpoints only accessible after authentification except for css and errors.
+	 * Also restrict the endpoint used for user management to admins.
+	 * Define a session-based authentication with Spring Security
+	 * @return the SecurityFilterChain used as a bean by Spring.
+	 */
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
 	{
@@ -37,6 +47,10 @@ public class SpringSecurityConfig
 				.build();
 	}
 
+	/**
+	 * Gives Spring Security an Authentication Manager that uses our custom users from database to authenticate them.
+	 * @return the AuthenticationManager used as a bean by Spring.
+	 */
 	@Bean
 	public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception
 	{
@@ -45,6 +59,10 @@ public class SpringSecurityConfig
 		return authenticationManagerBuilder.build();
 	}
 
+	/**
+	 * Provides a encoder for the Spring context to use.
+	 * @return the BCryptPasswordEncoder used as a bean by Spring.
+	 */
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder()
 	{

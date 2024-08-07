@@ -4,6 +4,9 @@ import com.openclassrooms.pcs.domain.Trade;
 
 import java.util.Optional;
 
+/**
+ * An Interface defining the methods needed for an implementation of a TradeService.
+ */
 public interface ITradeService
 {
 	public Iterable<Trade> getTrades();

@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
+/**
+ * A representation class for a rule_name object in the database.
+ */
 @Data
 @Entity
 @Table(name = "rule_name")

@@ -7,6 +7,9 @@ import lombok.Data;
 
 import java.sql.Timestamp;
 
+/**
+ * A representation class for a bid_list object in the database.
+ */
 @Data
 @Entity
 @Table(name = "bid_list")

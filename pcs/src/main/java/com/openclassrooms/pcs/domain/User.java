@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
+/**
+ * A representation class for a users object in the database
+ */
 @Data
 @Entity
 @Table(name = "users")

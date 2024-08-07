@@ -8,6 +8,9 @@ import lombok.Data;
 
 import java.sql.Timestamp;
 
+/**
+ * A representation class for a trade object in the database.
+ */
 @Data
 @Entity
 @Table(name = "trade")

@@ -4,6 +4,9 @@ import com.openclassrooms.pcs.domain.CurvePoint;
 
 import java.util.Optional;
 
+/**
+ * An Interface defining the methods needed for an implementation of a CurvePointService.
+ */
 public interface ICurvePointService
 {
 	public Iterable<CurvePoint> getCurvePoints();

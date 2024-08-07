@@ -4,6 +4,9 @@ import com.openclassrooms.pcs.domain.User;
 
 import java.util.Optional;
 
+/**
+ * An Interface defining the methods needed for an implementation of a UserService.
+ */
 public interface IUserService
 {
 	public Iterable<User> getUsers();

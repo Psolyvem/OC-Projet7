@@ -7,6 +7,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+/**
+ * A representation class for a rating object in the database.
+ */
 @Data
 @Entity
 @Table(name = "rating")

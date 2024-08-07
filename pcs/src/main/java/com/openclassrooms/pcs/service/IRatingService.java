@@ -4,6 +4,9 @@ import com.openclassrooms.pcs.domain.Rating;
 
 import java.util.Optional;
 
+/**
+ * An Interface defining the methods needed for an implementation of a RatingService.
+ */
 public interface IRatingService
 {
 	public Iterable<Rating> getRatings();
