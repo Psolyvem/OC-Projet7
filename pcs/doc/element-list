@@ -1,4 +1,5 @@
 com.openclassrooms.pcs
+com.openclassrooms.pcs.controller
 com.openclassrooms.pcs.controllers
 com.openclassrooms.pcs.domain
 com.openclassrooms.pcs.repositories

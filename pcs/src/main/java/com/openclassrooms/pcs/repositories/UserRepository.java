@@ -3,6 +3,7 @@ package com.openclassrooms.pcs.repositories;
 import com.openclassrooms.pcs.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 
 
 /**
@@ -12,4 +13,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 public interface UserRepository extends JpaRepository<User, Integer>, JpaSpecificationExecutor<User>
 {
 	public User findByUsername(String username);
+	@Query(value = "SELECT * FROM users WHERE username = :username AND NOT id = :userId", nativeQuery = true)
+	public User findByUsernameExcludeActual(String username, Integer userId);
 }

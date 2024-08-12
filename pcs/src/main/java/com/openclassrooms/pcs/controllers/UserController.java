@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.tinylog.Logger;
 
 import java.security.Principal;
 import java.util.regex.Matcher;
@@ -52,6 +53,10 @@ public class UserController
 		Matcher matcher = pattern.matcher(user.getPassword());
 		boolean isPasswordCorrect = matcher.matches();
 
+		if(userService.getUserByUsername(user.getUsername()) != null)
+		{
+			result.addError(new FieldError("username", "username", "Username already exists"));
+		}
 		if (!isPasswordCorrect && !result.hasFieldErrors("password"))
 		{
 			result.addError(new FieldError("password", "password", "Password must contain at least one uppercase letter, one lowercase, a digit and a special character and be between 8 and 32 char. long."));
@@ -71,9 +76,17 @@ public class UserController
 	@GetMapping("/user/update/{id}")
 	public String showUpdateForm(@PathVariable("id") Integer id, Model model)
 	{
-		User user = userService.getUserById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
-		user.setPassword("");
-		model.addAttribute("user", user);
+		try
+		{
+			User user = userService.getUserById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+			user.setPassword("");
+			model.addAttribute("user", user);
+		}
+		catch (IllegalArgumentException e)
+		{
+			Logger.error("Invalid user id : " + id + ", unable to update.");
+			return "redirect:/user/list";
+		}
 		return "user/update";
 	}
 
@@ -85,6 +98,10 @@ public class UserController
 		Matcher matcher = pattern.matcher(user.getPassword());
 		boolean isPasswordCorrect = matcher.matches();
 
+		if(userService.getUserByUsernameExcludeActual(user.getUsername(), user.getId()) != null)
+		{
+			result.addError(new FieldError("username", "username", "Username already exists"));
+		}
 		if (!isPasswordCorrect && !result.hasFieldErrors("password"))
 		{
 			result.addError(new FieldError("password", "password", "Password must contain at least one uppercase letter, one lowercase, a digit and a special character and be between 8 and 32 char. long."));
@@ -93,21 +110,35 @@ public class UserController
 		{
 			return "user/update";
 		}
-
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		user.setPassword(encoder.encode(user.getPassword()));
-		user.setId(id);
-		userService.updateUser(user);
-		model.addAttribute("users", userService.getUsers());
+		try
+		{
+			userService.getUserById(id).orElseThrow(() -> new IllegalArgumentException());
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+			user.setPassword(encoder.encode(user.getPassword()));
+			user.setId(id);
+			userService.updateUser(user);
+			model.addAttribute("users", userService.getUsers());
+		}
+		catch (IllegalArgumentException e)
+		{
+			Logger.error("Invalid user id : " + id + ", unable to update.");
+		}
 		return "redirect:/user/list";
 	}
 
 	@GetMapping("/user/delete/{id}")
 	public String deleteUser(@PathVariable("id") Integer id, Model model)
 	{
-		User user = userService.getUserById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
-		userService.deleteUser(user);
-		model.addAttribute("users", userService.getUsers());
+		try
+		{
+			User user = userService.getUserById(id).orElseThrow(() -> new IllegalArgumentException());
+			userService.deleteUser(user);
+			model.addAttribute("users", userService.getUsers());
+		}
+		catch (IllegalArgumentException e)
+		{
+			Logger.error("Invalid user id : " + id + ", unable to delete.");
+		}
 		return "redirect:/user/list";
 	}
 }

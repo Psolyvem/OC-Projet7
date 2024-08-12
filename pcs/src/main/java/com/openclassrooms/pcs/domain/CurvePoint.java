@@ -2,14 +2,12 @@ package com.openclassrooms.pcs.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
 
 import java.sql.Timestamp;
 
 /**
  * A representation class for a curve_point object in the database.
  */
-@Data
 @Entity
 @Table(name = "curve_point")
 public class CurvePoint {

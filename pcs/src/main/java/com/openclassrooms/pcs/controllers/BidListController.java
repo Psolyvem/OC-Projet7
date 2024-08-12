@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.validation.Valid;
+import org.tinylog.Logger;
 
 /**
  * Controller for handling HTTP request concerning BidLists.
@@ -24,6 +25,7 @@ public class BidListController
 
 	/**
 	 * Constructor, used only for testing.
+	 *
 	 * @param bidListService injection of dependency IBidListService
 	 */
 	public BidListController(IBidListService bidListService)
@@ -33,6 +35,7 @@ public class BidListController
 
 	/**
 	 * Called when an HTTP request GET is done on bidList/list.
+	 *
 	 * @param model The data handled to the view
 	 * @return The view of bidList/list
 	 */
@@ -45,6 +48,7 @@ public class BidListController
 
 	/**
 	 * Called when an HTTP request GET is done on bidList/add.
+	 *
 	 * @return The view of bidList/add
 	 */
 	@GetMapping("/bidList/add")
@@ -55,9 +59,10 @@ public class BidListController
 
 	/**
 	 * Called when an HTTP request POST is done on bidList/validate.
+	 *
 	 * @param bidList The bidList object constructed from the form
-	 * @param result The eventual errors that returns to the view
-	 * @param model The data handled to the view
+	 * @param result  The eventual errors that returns to the view
+	 * @param model   The data handled to the view
 	 * @return Either the bidList/list page updated or the bidList/add page with errors
 	 */
 	@Transactional
@@ -75,24 +80,34 @@ public class BidListController
 
 	/**
 	 * Called when an HTTP request GET is done on bidList/update/{id}.
-	 * @param id Id of the object to update (from URL)
+	 *
+	 * @param id    Id of the object to update (from URL)
 	 * @param model The data handled to the view
 	 * @return The view of bidList/update
 	 */
 	@GetMapping("/bidList/update/{id}")
 	public String showUpdateForm(@PathVariable("id") Integer id, Model model)
 	{
-		BidList bidList = bidListService.getBidListById(id).orElseThrow(() -> new IllegalArgumentException("Invalid bidList Id:" + id));
-		model.addAttribute("bidList", bidList);
+		try
+		{
+			BidList bidList = bidListService.getBidListById(id).orElseThrow(() -> new IllegalArgumentException("Invalid bidList Id:" + id));
+			model.addAttribute("bidList", bidList);
+		}
+		catch (IllegalArgumentException e)
+		{
+			Logger.error("Invalid bidList id : " + id + ", unable to update.");
+			return "redirect:/bidList/list";
+		}
 		return "bidList/update";
 	}
 
 	/**
 	 * Called when an HTTP request POST is done on bidList/update/{id}.
-	 * @param id Id of the object to update (from URL)
+	 *
+	 * @param id      Id of the object to update (from URL)
 	 * @param bidList The bidList object constructed from the form
-	 * @param result The eventual errors that returns to the view
-	 * @param model The data handled to the view
+	 * @param result  The eventual errors that returns to the view
+	 * @param model   The data handled to the view
 	 * @return Either the bidList/list page updated or the bidList/update page with errors
 	 */
 	@Transactional
@@ -101,26 +116,41 @@ public class BidListController
 	{
 		if (!result.hasErrors())
 		{
-			bidListService.updateBidList(bidList);
-			model.addAttribute("bidLists", bidListService.getBidLists());
+			try
+			{
+				bidListService.getBidListById(id).orElseThrow(() -> new IllegalArgumentException());
+				bidListService.updateBidList(bidList);
+				model.addAttribute("bidLists", bidListService.getBidLists());
+			}
+			catch (Exception e)
+			{
+				Logger.error("Invalid bidList id : " + id + ", unable to update.");
+			}
 			return "redirect:/bidList/list";
 		}
-
 		return "bidList/update";
 	}
 
 	/**
 	 * Called when an HTTP request POST is done on bidList/update/{id}.
-	 * @param id Id of the object to delete (from URL)
+	 *
+	 * @param id    Id of the object to delete (from URL)
 	 * @param model The data handled to the view
 	 * @return The view of bidList/list updated
 	 */
 	@GetMapping("/bidList/delete/{id}")
 	public String deleteBid(@PathVariable("id") Integer id, Model model)
 	{
-		BidList bidList = bidListService.getBidListById(id).orElseThrow(() -> new IllegalArgumentException("Invalid bidList Id:" + id));
-		bidListService.deleteBidList(bidList);
-		model.addAttribute("bidLists", bidListService.getBidLists());
+		try
+		{
+			BidList bidList = bidListService.getBidListById(id).orElseThrow(() -> new IllegalArgumentException("Invalid bidList Id:" + id));
+			bidListService.deleteBidList(bidList);
+			model.addAttribute("bidLists", bidListService.getBidLists());
+		}
+		catch (IllegalArgumentException e)
+		{
+			Logger.error("Invalid bidList id : " + id + ", unable to update.");
+		}
 		return "redirect:/bidList/list";
 	}
 }

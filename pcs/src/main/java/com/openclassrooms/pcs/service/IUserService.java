@@ -15,6 +15,8 @@ public interface IUserService
 
 	public User getUserByUsername(String name);
 
+	public User getUserByUsernameExcludeActual(String username, Integer userId);
+
 	public void createUser(User user);
 
 	public void updateUser(User user);

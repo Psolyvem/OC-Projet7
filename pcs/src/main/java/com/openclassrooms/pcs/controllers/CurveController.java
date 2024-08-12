@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.tinylog.Logger;
 
 /**
  * Controller for handling HTTP request concerning CurvePoints.
@@ -81,8 +82,16 @@ public class CurveController
 	@GetMapping("/curvePoint/update/{id}")
 	public String showUpdateForm(@PathVariable("id") Integer id, Model model)
 	{
-		CurvePoint curvePoint = curvePointService.getCurvePointById(id).orElseThrow(() -> new IllegalArgumentException("Invalid curvePoint Id:" + id));
-		model.addAttribute("curvePoint", curvePoint);
+		try
+		{
+			CurvePoint curvePoint = curvePointService.getCurvePointById(id).orElseThrow(() -> new IllegalArgumentException("Invalid curvePoint Id:" + id));
+			model.addAttribute("curvePoint", curvePoint);
+		}
+		catch (IllegalArgumentException e)
+		{
+			Logger.error("Invalid CurvePoint id : " + id + ", unable to update.");
+			return "redirect:/curvePoint/list";
+		}
 		return "curvePoint/update";
 	}
 
@@ -100,8 +109,16 @@ public class CurveController
 	{
 		if (!result.hasErrors())
 		{
-			curvePointService.updateCurvePoint(curvePoint);
-			model.addAttribute("curvePoints", curvePointService.getCurvePoints());
+			try
+			{
+				curvePointService.getCurvePointById(id).orElseThrow(() -> new IllegalArgumentException());
+				curvePointService.updateCurvePoint(curvePoint);
+				model.addAttribute("curvePoints", curvePointService.getCurvePoints());
+			}
+			catch (IllegalArgumentException e)
+			{
+				Logger.error("Invalid CurvePoint id : " + id + ", unable to update.");
+			}
 			return "redirect:/curvePoint/list";
 		}
 
@@ -117,9 +134,16 @@ public class CurveController
 	@GetMapping("/curvePoint/delete/{id}")
 	public String deleteCurvePoint(@PathVariable("id") Integer id, Model model)
 	{
-		CurvePoint curvePoint = curvePointService.getCurvePointById(id).orElseThrow(() -> new IllegalArgumentException("Invalid curvePoint Id:" + id));
-		curvePointService.deleteCurvePoint(curvePoint);
-		model.addAttribute("curvePoints", curvePointService.getCurvePoints());
+		try
+		{
+			CurvePoint curvePoint = curvePointService.getCurvePointById(id).orElseThrow(() -> new IllegalArgumentException("Invalid curvePoint Id:" + id));
+			curvePointService.deleteCurvePoint(curvePoint);
+			model.addAttribute("curvePoints", curvePointService.getCurvePoints());
+		}
+		catch (IllegalArgumentException e)
+		{
+			Logger.error("Invalid CurvePoint id : " + id + ", unable to update.");
+		}
 		return "redirect:/curvePoint/list";
 	}
 }

@@ -60,7 +60,7 @@ public class SpringSecurityConfig
 	}
 
 	/**
-	 * Provides a encoder for the Spring context to use.
+	 * Provides an encoder for the Spring context to use.
 	 * @return the BCryptPasswordEncoder used as a bean by Spring.
 	 */
 	@Bean

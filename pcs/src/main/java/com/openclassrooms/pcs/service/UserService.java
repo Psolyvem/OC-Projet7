@@ -50,6 +50,19 @@ public class UserService implements IUserService
 	}
 
 	/**
+	 * Gets a User from the database based on its username, but exclude the given if rom the research.
+	 * Useful to find if a user has already the same username tha the one we're trying to set for an already registered user.
+	 * @param username the username we are looking for.
+	 * @param userId the id of the user we want to exclude from the research.
+	 * @return the User that matches the username and does not possess the given id, or null.
+	 */
+	@Override
+	public User getUserByUsernameExcludeActual(String username, Integer userId)
+	{
+		return userRepository.findByUsernameExcludeActual(username, userId);
+	}
+
+	/**
 	 * Save a User object to the database.
 	 * @param user the User to save.
 	 */

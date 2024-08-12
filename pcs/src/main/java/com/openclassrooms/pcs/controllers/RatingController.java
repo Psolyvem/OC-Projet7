@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.tinylog.Logger;
 
 /**
  * Controller for handling HTTP request concerning Ratings.
@@ -81,8 +82,16 @@ public class RatingController
 	@GetMapping("/rating/update/{id}")
 	public String showUpdateForm(@PathVariable("id") Integer id, Model model)
 	{
-		Rating rating = ratingService.getRatingById(id).orElseThrow(() -> new IllegalArgumentException("Invalid rating Id:" + id));
-		model.addAttribute("rating", rating);
+		try
+		{
+			Rating rating = ratingService.getRatingById(id).orElseThrow(() -> new IllegalArgumentException("Invalid rating Id:" + id));
+			model.addAttribute("rating", rating);
+		}
+		catch (IllegalArgumentException e)
+		{
+			Logger.error("Invalid Rating id : " + id + ", unable to update.");
+			return "redirect:/rating/list";
+		}
 		return "rating/update";
 	}
 
@@ -100,11 +109,18 @@ public class RatingController
 	{
 		if (!result.hasErrors())
 		{
-			ratingService.updateRating(rating);
-			model.addAttribute("ratings", ratingService.getRatings());
+			try
+			{
+				ratingService.getRatingById(id).orElseThrow(() -> new IllegalArgumentException());
+				ratingService.updateRating(rating);
+				model.addAttribute("ratings", ratingService.getRatings());
+			}
+			catch (IllegalArgumentException e)
+			{
+				Logger.error("Invalid Rating id : " + id + ", unable to update.");
+			}
 			return "redirect:/rating/list";
 		}
-
 		return "rating/update";
 	}
 
@@ -117,9 +133,16 @@ public class RatingController
 	@GetMapping("/rating/delete/{id}")
 	public String deleteRating(@PathVariable("id") Integer id, Model model)
 	{
-		Rating rating = ratingService.getRatingById(id).orElseThrow(() -> new IllegalArgumentException("Invalid rating Id:" + id));
-		ratingService.deleteRating(rating);
-		model.addAttribute("ratings", ratingService.getRatings());
+		try
+		{
+			Rating rating = ratingService.getRatingById(id).orElseThrow(() -> new IllegalArgumentException("Invalid rating Id:" + id));
+			ratingService.deleteRating(rating);
+			model.addAttribute("ratings", ratingService.getRatings());
+		}
+		catch (IllegalArgumentException e)
+		{
+			Logger.error("Invalid Rating id : " + id + ", unable to update.");
+		}
 		return "redirect:/rating/list";
 	}
 }
