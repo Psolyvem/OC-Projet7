@@ -122,7 +122,7 @@ public class BidListController
 				bidListService.updateBidList(bidList);
 				model.addAttribute("bidLists", bidListService.getBidLists());
 			}
-			catch (Exception e)
+			catch (IllegalArgumentException e)
 			{
 				Logger.error("Invalid bidList id : " + id + ", unable to update.");
 			}
