@@ -49,7 +49,7 @@ Mysql -u root -p
 ```
 Déplacez vous ensuite jusqu'a l'emplacement du fichier `database.sql` et exécutez le.
 ```bash
-source database.sql
+source data.sql
 ```
 Une fois ces prérequis installés et configurés, vous devrez peut être modifier le fichier application.properties afin de le configurer correctement en fonction de votre installation de MySQL.
 
